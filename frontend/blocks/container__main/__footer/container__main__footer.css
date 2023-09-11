@@ -1,0 +1,16 @@
+.container__main__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 358px;
+  height: 17px;
+  margin: auto;
+  margin-top: 15px;
+  
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .container__main__footer {
+      max-width: 300px;
+  }
+}

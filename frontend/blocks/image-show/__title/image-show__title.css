@@ -1,0 +1,21 @@
+.image-show__title {
+  font-family: "Inter", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #FFFFFF;
+  margin-top: 547px;
+  position: absolute;
+  z-index: 5;
+  margin-left: -335px;
+
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .image-show__title{
+    margin-left: 0px;
+    margin-top: 360px;
+      
+  }
+}

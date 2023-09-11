@@ -1,0 +1,16 @@
+.element {
+  border-radius: 10px 10px 10px 10px;
+  display: grid;
+  max-width: 282px;
+  background: #FFFFFF;
+  grid-gap: 17px;
+  margin-bottom: 20px;
+    
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .popup__container {
+    width: 100%;
+      
+  }
+}

@@ -1,0 +1,23 @@
+.add-button__icon {
+  margin: 14px 64px;
+  width: 22px;
+  height: 22px;
+  color: #FFFFFF;
+}
+
+
+@media screen and (min-width: 767px) and (max-width: 1250px) {
+  .add-button__icon {
+      margin: 10px 45px;
+    
+}
+  }
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .add-button__icon {
+      min-width: 16px;
+      min-height: 16px;
+      margin:10px 125px;
+      
+  }
+}

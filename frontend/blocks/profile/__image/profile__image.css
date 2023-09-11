@@ -1,0 +1,21 @@
+.profile__image {
+  border-radius: 50%;
+  max-width: 120px;
+  max-height: 120px;
+  margin-top: 3.75px;
+  margin-left: 22.5px;
+
+}
+
+@media screen and (min-width: 767px) and (max-width: 1250px) {
+  .profile__image {
+    margin: 3.75px 25px;
+    
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .profile__image {
+    margin: 3.75px 23px;
+  }
+}

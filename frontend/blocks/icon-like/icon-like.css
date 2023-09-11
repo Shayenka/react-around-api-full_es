@@ -1,0 +1,12 @@
+.icon-like {
+  width: 21px;
+  height: 19px;
+}
+
+.icon-like:hover {
+  /* background-image: url(../../images/BlackLike.svg); */
+  opacity: 0.6;
+  /* width: 21px;
+  height: 19px; */
+}
+

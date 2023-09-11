@@ -1,0 +1,9 @@
+.container__main {
+    justify-content: space-between;
+    background-color: black;
+    flex-direction: column;
+    margin: auto;
+    display: flex;
+    margin-top:80px;
+    bottom: auto;
+}
