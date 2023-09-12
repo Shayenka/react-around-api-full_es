@@ -1,35 +1,29 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-
-const {
-  ERROR_CODE_INVALID,
-  ERROR_CODE_NOT_FOUND,
-} = require('../utils/errorCodes');
+const { NotFoundError, InvalidError, ServerError } = require('../middlewares/errors');
 
 // Controlador para obtener todas los usuarios
-const getUsers = async (req, res) => {
+const getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
     res.json(users);
   } catch (error) {
-    res.status(500).json({ message: 'Ha ocurrido un error en el servidor.' });
+    next(new ServerError('Ha ocurrido un error en el servidor.'));
   }
 };
 
-// Controlador para obterner un usuario por su id
-const getUserId = async (req, res) => {
+const getUserId = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const user = await User.findById(userId).orFail(() => {
-      const error = new Error('Usuario no encontrado');
-      error.statusCode = ERROR_CODE_NOT_FOUND;
+      const error = new NotFoundError('Usuario no encontrado');
       throw error;
     });
 
     res.json({ user });
   } catch (error) {
-    res.status(500).json({ message: 'Ha ocurrido un error en el servidor.' });
+    next(new ServerError('Ha ocurrido un error en el servidor.'));
   }
 };
 
@@ -40,60 +34,55 @@ const getUserProfile = (req, res) => {
 };
 
 // Controlador para crear un nuevo usuario
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
   try {
     const { name, about, avatar, email, password } = req.body;
     const user = await User.findOne({ email });
     let passwordHashed = '';
     if (user) {
-      throw new Error('El usuario con ese email ya existe');
+      throw new InvalidError('El usuario con ese email ya existe');
     }
 
-    passwordHashed = bcrypt.hash(password);
+    passwordHashed = bcrypt.hash(password, 10);
     const newUser = await User.create({
       name,
       about,
       avatar,
       email,
-      passwordHashed,
+      password: passwordHashed,
     });
 
     res.status(201).json(newUser);
   } catch (error) {
     if (error.name === 'ValidationError') {
-      res
-        .status(ERROR_CODE_INVALID)
-        .json({ message: 'Datos de usuario inválidos.' });
+      next(new InvalidError('Datos del perfil inválidos.'));
     } else {
-      res.status(500).json({ message: 'Ha ocurrido un error en el servidor.' });
+      next(new ServerError('Ha ocurrido un error en el servidor.'));
     }
   }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findUserWithCredentials(email, password);
-    let token = '';
+
     if (user) {
-      token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
+      const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
         expiresIn: '7d',
       });
-    }
-
-    res.send({ data: user, token });
-  } catch (error) {
-    if (error.name === 'ValidationError') {
-      res.status(401).json({ message: 'Datos del perfil inválidos.' });
+      res.send({ data: user, token });
     } else {
-      res.status(500).json({ message: 'Ha ocurrido un error en el servidor.' });
+      throw new InvalidError('Credenciales de inicio de sesión inválidas');
     }
+  } catch (error) {
+    next(error);
   }
 };
 
 // Controlador para actualizar información del perfil de usuario
-const updateUserProfile = async (req, res) => {
+const updateUserProfile = async (req, res, next) => {
   try {
     const { name, about } = req.body;
 
@@ -109,9 +98,7 @@ const updateUserProfile = async (req, res) => {
     res.status(201).json(updateUser);
   } catch (error) {
     if (error.name === 'ValidationError') {
-      res
-        .status(ERROR_CODE_INVALID)
-        .json({ message: 'Datos del perfil inválidos.' });
+      next(new InvalidError('Datos del perfil inválidos.'));
     } else {
       res.status(500).json({ message: 'Ha ocurrido un error en el servidor.' });
     }
@@ -137,7 +124,7 @@ const updateUserAvatarProfile = async (req, res) => {
         .status(ERROR_CODE_INVALID)
         .json({ message: 'Datos de foto de perfil inválidos.' });
     } else {
-      res.status(500).json({ message: 'Ha ocurrido un error en el servidor.' });
+      next(new ServerError('Ha ocurrido un error en el servidor.'));
     }
   }
 };
@@ -148,7 +135,6 @@ module.exports = {
   getUserProfile,
   createUser,
   login,
-  deleteCard,
   updateUserProfile,
   updateUserAvatarProfile,
 };
