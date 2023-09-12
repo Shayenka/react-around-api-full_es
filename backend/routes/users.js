@@ -10,7 +10,7 @@ router.get('/users', jwtMiddleware, usersController.getUsers);
 
 router.get('/users/:userId', jwtMiddleware, usersController.getUserId);
 
-router.get('/users/me', jwtMiddleware, userController.getUserProfile);
+router.get('/users/me', jwtMiddleware, usersController.getUserProfile);
 
 router.patch('/users/me', jwtMiddleware, celebrate({
   body: Joi.object().keys({
