@@ -3,6 +3,8 @@ const express = require('express');
 const router = express.Router();
 const cardsController = require('../controllers/card');
 
+const { celebrate, Joi } = require('celebrate');
+
 const { validateURL } = require('../middlewares/validator');
 
 router.get('/cards', cardsController.getCards);
