@@ -6,7 +6,7 @@ const errorLogger = require('./middlewares/error.log');
 
 require('dotenv').config(); // Cargar variables de entorno desde un archivo .env
 
-const { PORT, MONGODB_URI } = process.env;
+// const { PORT, MONGODB_URI } = process.env;
 
 const path = require('path');
 
@@ -22,7 +22,7 @@ var cors = require('cors');
 const app = express();
 
 // Conexión a la base de datos
-mongoose.connect(MONGODB_URI)
+mongoose.connect('mongodb://127.0.0.1:27017/aroundb')
   .then(() => {
     console.log('Connected to database');
   })
@@ -62,6 +62,9 @@ app.use((err, req, res, next) => {
   res.status(err.statusCode).send({ message: err.message });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
 });
+
+
+// console.log(`Server running on port ${PORT}`);
