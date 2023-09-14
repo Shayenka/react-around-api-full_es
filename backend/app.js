@@ -6,7 +6,7 @@ const errorLogger = require('./middlewares/error.log');
 
 require('dotenv').config(); // Cargar variables de entorno desde un archivo .env
 
-// const { PORT, MONGODB_URI } = process.env;
+// const { PORT, MONGODB_URL } = process.env;
 
 const path = require('path');
 
