@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const generateAuthToken = require('../utils/utils');
 const User = require('../models/user');
 const { NotFoundError, InvalidError, ServerError } = require('../middlewares/errors');
 
@@ -33,17 +33,20 @@ const getUserProfile = (req, res) => {
   res.json({ user });
 };
 
+const hashPassword = async (password) => bcrypt.hash(password, 10);
+
 // Controlador para crear un nuevo usuario
 const createUser = async (req, res, next) => {
   try {
-    const { name, about, avatar, email, password } = req.body;
+    const {
+      name, about, avatar, email, password,
+    } = req.body;
     const user = await User.findOne({ email });
-    let passwordHashed = '';
     if (user) {
-      throw new InvalidError('El usuario con ese email ya existe');
+      throw new InvalidError('Ya Existe un usuario con ese email');
     }
 
-    passwordHashed = bcrypt.hash(password, 10);
+    const passwordHashed = await hashPassword(password);
     const newUser = await User.create({
       name,
       about,
@@ -55,7 +58,7 @@ const createUser = async (req, res, next) => {
     res.status(201).json(newUser);
   } catch (error) {
     if (error.name === 'ValidationError') {
-      next(new InvalidError('Datos del perfil inválidos.'));
+      next(new InvalidError('Se pasaron datos incorrectos.'));
     } else {
       next(new ServerError('Ha ocurrido un error en el servidor.'));
     }
@@ -69,13 +72,10 @@ const login = async (req, res, next) => {
     const user = await User.findUserWithCredentials(email, password);
 
     if (user) {
-      const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
-        expiresIn: '7d',
-      });
-      res.send({ data: user, token });
-    } else {
-      throw new InvalidError('Credenciales de inicio de sesión inválidas');
+      const token = await generateAuthToken();
+      return res.send({ token });
     }
+    throw new InvalidCredentialsError('Credenciales de inicio de sesión inválidas');
   } catch (error) {
     next(error);
   }

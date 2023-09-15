@@ -1,27 +1,24 @@
-module.exports = (req, res, next) => {
+const jwt require('jsonwebtoken');
+
+export const jwtMiddleware = async (req, res, next) => {
   const { authorization } = req.headers;
-  // comprobemos que el encabezado existe y comienza con 'Bearer '
   if (!authorization || !authorization.startsWith('Bearer ')) {
     return res
-      .status(401)
+      .status(403)
       .send({ message: 'Se requiere autorización' });
   }
 
-  // obtener el token
   const token = authorization.replace('Bearer ', '');
-  let payload;
 
   try {
-    // tratando de verificar el token
-    payload = jwt.verify(token, process.env.SECRET_KEY);
+    const payload = await jwt.verify(token, process.env.SECRET_KEY);
+
+    if(!payload) {
+      return res.status(403).send({ message: 'El token no es valido' });
+    }
+    req.user = payload;
+    return next();
   } catch (err) {
-    // devolvemos un error si algo va mal
-    return res
-      .status(401)
-      .send({ message: 'Se requiere autorización' });
+    return res.status(403).send({ message: 'El token no es valido' });
   }
-
-  req.user = payload; // asigna el payload al objeto de solicitud
-
-  next(); // envía la solicitud al siguiente middleware
 };

@@ -17,9 +17,7 @@ const cards = require(cardsPath);
 
 const { login, createUser } = require('./controllers/users');
 
-var cors = require('cors');
-
-const app = express();
+const cors = require('cors');
 
 // Conexión a la base de datos
 mongoose.connect('mongodb://127.0.0.1:27017/aroundb')
@@ -30,6 +28,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/aroundb')
     console.error(`Error connecting to the database. ${err}`);
   });
 
+const app = express();
 app.use(express.json());
 
 app.use(users);
@@ -63,7 +62,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(3000, () => {
-  console.log('Server running on port 3000');
+  console.log('Server is running on port 3000');
 });
 
 

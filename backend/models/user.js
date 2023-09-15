@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: (value) => validator.isEmail(value),
-      message: 'Email incorrecto',
+      message: (props) => `${props.value} no es un email valido`,
     },
   },
   password: {
@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
       },
       message: 'El enlace del avatar no cumple con los requisitos.',
     },
-    default: 'enlace',
+    default: 'https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg',
   },
 });
 
@@ -45,16 +45,18 @@ userSchema.statics.findUserWithCredentials = async function (email, password) {
   const user = await this.findOne({ email }).select('+password');
 
   if (!user) {
-    throw new Error('El usuario no existe');
+    return new Error('Usuario no encontrado');
   }
 
   const comparedPasswords = await bcrypt.compare(password, user.password);
 
   if (!comparedPasswords) {
-    throw new Error('El password es incorrecto');
+    return new Error('Contraseña incorrecta');
   }
 
   return user;
 };
 
-module.exports = mongoose.model('user', userSchema);
+const User = mongoose.model('user', userSchema);
+
+export default User;

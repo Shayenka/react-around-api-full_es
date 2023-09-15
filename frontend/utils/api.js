@@ -1,6 +1,6 @@
 class Api {
   constructor({ address, groupId, token }) {
-    this.authorization = token;
+    this.token = token; 
     this.address = address;
     this.groupId = groupId;
   }
@@ -8,7 +8,7 @@ class Api {
   _useFetch(url, method, body) {
     return fetch(url, {
       headers: {
-        authorization: this.authorization,
+        authorization: `Bearer ${this.token}`, 
         "Content-Type": "application/json",
       },
       method,
