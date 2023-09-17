@@ -29,3 +29,9 @@ En este proyecto se creó una API RESTful para la aplicación "Around the U.S.",
 `npm run dev` — to launch the server with the hot reload feature.  
 
 El servidor se ejecutará en el puerto 3000 por defecto. Puedes acceder a la API a través de http://localhost:3000.
+
+## Dominios del servidor
+
+api.shayenkalvarado.com 
+shayenkalvarado.com 
+www.shayenkalvarado.com
