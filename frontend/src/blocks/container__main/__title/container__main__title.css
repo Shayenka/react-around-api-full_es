@@ -1,0 +1,22 @@
+.container__main__title {
+  font-family: "Inter", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 2;
+  color: white;
+  align-items: center;
+  width: 358px;
+  height: 27px;
+  margin-top:179px;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 40px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .container__main__title {
+    max-width: 300px
+  }
+}

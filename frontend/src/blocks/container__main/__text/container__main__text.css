@@ -1,0 +1,24 @@
+.container__main__text {
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 2;
+    color: #CCCCCC;
+    width: 358px;
+    height: 27px;
+    border-bottom: 2px solid #CCCCCC;
+    background-color: black;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    display: flex;
+    margin: auto;
+    margin-top: 20px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .container__main__text  {
+        max-width: 250px;
+    }
+  }

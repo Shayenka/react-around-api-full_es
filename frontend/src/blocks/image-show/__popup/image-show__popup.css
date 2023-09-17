@@ -1,0 +1,17 @@
+.image-show__popup {
+  max-height: 75vh;
+  position: absolute;
+  z-index: 3;
+  max-width: 433px;
+  min-height: 540px;
+  border-radius: 20px 20px 20px 20px;
+    
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .image-show__popup {
+    max-width: 250px;
+    min-height: 350px;
+      
+  }
+}

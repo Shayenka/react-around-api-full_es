@@ -1,0 +1,10 @@
+.element__footer-photo {
+  margin: 24px 15px 25px 21px;
+  width: 246px;
+  height: auto;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;  
+  
+}

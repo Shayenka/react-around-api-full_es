@@ -1,0 +1,13 @@
+.header__text {
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 2;
+    color: white;
+    
+}
+
+.header__text:hover {
+    opacity: 0.6;
+  }

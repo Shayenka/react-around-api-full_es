@@ -17,7 +17,7 @@ const cards = require(cardsPath);
 
 const { login, createUser } = require('./controllers/users');
 
-const cors = require('cors');
+var cors = require('cors');
 
 // Conexión a la base de datos
 mongoose.connect('mongodb://127.0.0.1:27017/aroundb')
@@ -31,13 +31,13 @@ mongoose.connect('mongodb://127.0.0.1:27017/aroundb')
 const app = express();
 app.use(express.json());
 
-app.use(users);
-app.use(cards);
-
 app.use(requestLogger);
 
 app.use(cors());
 app.options('*', cors());
+
+app.use(users);
+app.use(cards);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
