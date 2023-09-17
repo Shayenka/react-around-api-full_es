@@ -1,9 +1,9 @@
 const express = require('express');
 
 const router = express.Router();
+const { celebrate, Joi } = require('celebrate');
 const usersController = require('../controllers/users');
 const jwtMiddleware = require('../middlewares/auth');
-const { celebrate, Joi } = require('celebrate');
 const { validateURL } = require('../middlewares/validator');
 
 router.get('/users', jwtMiddleware, usersController.getUsers);

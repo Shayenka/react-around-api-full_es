@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
+const path = require('path');
+const cors = require('cors');
 const requestLogger = require('./middlewares/request.log');
 const errorLogger = require('./middlewares/error.log');
 
@@ -8,16 +10,12 @@ require('dotenv').config(); // Cargar variables de entorno desde un archivo .env
 
 // const { PORT, MONGODB_URL } = process.env;
 
-const path = require('path');
-
 const usersPath = path.join(__dirname, 'routes', 'users');
 const users = require(usersPath);
 const cardsPath = path.join(__dirname, 'routes', 'cards');
 const cards = require(cardsPath);
 
 const { login, createUser } = require('./controllers/users');
-
-var cors = require('cors');
 
 // Conexión a la base de datos
 mongoose.connect('mongodb://127.0.0.1:27017/aroundb')
@@ -64,6 +62,5 @@ app.use((err, req, res, next) => {
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
-
 
 // console.log(`Server running on port ${PORT}`);
