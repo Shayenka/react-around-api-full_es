@@ -10,7 +10,7 @@ router.get('/users', jwtMiddleware, usersController.getUsers);
 router.get('/users/:userId', jwtMiddleware, usersController.getUserId);
 router.get('/users/me', jwtMiddleware, usersController.getUserProfile);
 router.post('/users', jwtMiddleware, usersController.createUser);
-router.post('/signin', jwtMiddleware, usersController.login);
+router.post('/signin', usersController.login);
 
 router.patch('/users/me', jwtMiddleware, celebrate({
   body: Joi.object().keys({

@@ -30,14 +30,19 @@ export const authorize = async (email, password) => {
       body: JSON.stringify({ email, password }),
     });
 
-    const data = await response.json();
-
-    if (data) {
-      localStorage.setItem("jwt", data.token);
-      return data;
+    if (response.ok) {
+      const data = await response.json();
+      if (data && data.token) {
+        localStorage.setItem("jwt", data.token);
+        return data;
+      } else {
+        console.error("La respuesta del servidor no contiene un token válido.");
+      }
+    } else {
+      console.error("Error en la respuesta del servidor:", response.status);
     }
   } catch (err) {
-    console.error(err);
+    console.error("Error en la solicitud:", err);
   }
 };
 

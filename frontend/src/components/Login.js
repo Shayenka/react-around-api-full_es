@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ValidateEmail, ValidatePassword } from "../utils/Validator.js";
 import logo from "../images/logo.svg";
@@ -34,7 +34,7 @@ function Login({ onLoggedIn, loggedIn }) {
     authorize(email, password)
       .then((data) => {
         if (data.token) {
-          onLoggedIn();
+          onLoggedIn(data);
           navigate("/");
         }
       })
