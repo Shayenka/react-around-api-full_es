@@ -1,6 +1,6 @@
-const jwt require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
-export const jwtMiddleware = async (req, res, next) => {
+const jwtMiddleware = async (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization || !authorization.startsWith('Bearer ')) {
     return res
@@ -13,12 +13,15 @@ export const jwtMiddleware = async (req, res, next) => {
   try {
     const payload = await jwt.verify(token, process.env.SECRET_KEY);
 
-    if(!payload) {
+    if (!payload) {
       return res.status(403).send({ message: 'El token no es valido' });
     }
     req.user = payload;
-    return next();
+    next();
+    return req.user;
   } catch (err) {
     return res.status(403).send({ message: 'El token no es valido' });
   }
 };
+
+module.exports = { jwtMiddleware };

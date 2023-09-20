@@ -27,7 +27,7 @@ function App() {
   const [token, setToken] = useState(null);
 
   const api = new Api({
-    address: "https://nomoreparties.co",
+    address: "http://127.0.0.1:3000",
     groupId: "web_es_05",
     token: token,
   });
@@ -56,27 +56,6 @@ function App() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   api
-  //     .getUserInfo()
-  //     .then((response) => {
-  //       setCurrentUser(response);
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error al obtener los datos del usuario:", error);
-  //     });
-  // }, []);
-
-  // useEffect(() => {
-  //   api
-  //     .getCards()
-  //     .then((response) => {
-  //       setCards(response);
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error al obtener los datos de las tarjetas:", error);
-  //     });
-  // }, []);
 
   function handleUpdateUser(user) {
     api.editUserInfo(user.name, user.about).then((response) => {

@@ -41,6 +41,14 @@ function Register({ onRegister, loggedIn }) {
 
     try {
       const userRegistered = await onRegister(email, password);
+      // const userRegistered = await fetch(`http://127.0.0.1:3000/signup`, {
+      //   method: "POST",
+      //   headers: {
+      //     Accept: "application/json",
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ email, password }),
+      // })
 
       if (userRegistered) {
         setShowPopupSuccessfulRegister(true);

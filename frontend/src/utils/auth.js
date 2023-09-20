@@ -1,4 +1,4 @@
-const BASE_URL = "https://register.nomoreparties.co";
+const BASE_URL = "http://127.0.0.1:3000";
 
 export const registerUser = async (email, password) => {
   return fetch(`${BASE_URL}/signup`, {

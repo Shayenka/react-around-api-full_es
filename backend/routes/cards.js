@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { celebrate, Joi } = require('celebrate');
 const cardsController = require('../controllers/card');
-const jwtMiddleware = require('../middlewares/auth');
+const { jwtMiddleware } = require('../middlewares/auth');
 
 const { validateURL } = require('../middlewares/validator');
 

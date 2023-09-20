@@ -1,5 +1,7 @@
 const Card = require('../models/card');
-const { NotFoundError, InvalidError, NotAuthorization, ServerError } = require('../middlewares/errors');
+const {
+  NotFoundError, InvalidError, NotAuthorization, ServerError,
+} = require('../middlewares/errors');
 
 // Controlador para obtener todas las tarjetas
 const getCards = async (req, res, next) => {
@@ -7,7 +9,7 @@ const getCards = async (req, res, next) => {
     const cards = await Card.find();
     res.json(cards);
   } catch (error) {
-    next(new ServerError('Ha ocurrido un error en el servidor.'));
+    next(ServerError('Ha ocurrido un error en el servidor.'));
   }
 };
 
@@ -20,9 +22,9 @@ const createCard = async (req, res, next) => {
     res.status(201).json(newCard);
   } catch (error) {
     if (error.name === 'ValidationError') {
-      next(new InvalidError('Datos de la tarjeta inválidos.'));
+      next(InvalidError('Datos de la tarjeta inválidos.'));
     } else {
-      next(new ServerError('Ha ocurrido un error en el servidor.'));
+      next(ServerError('Ha ocurrido un error en el servidor.'));
     }
   }
 };
@@ -46,9 +48,9 @@ const deleteCard = async (req, res, next) => {
     res.json({ data: deletedCard });
   } catch (error) {
     if (error.name === 'ValidationError') {
-      next(new InvalidError('Se pasaron datos inválidos.'));
+      next(InvalidError('Se pasaron datos inválidos.'));
     }
-    next(new ServerError('Ha ocurrido un error en el servidor.'));
+    next(ServerError('Ha ocurrido un error en el servidor.'));
   }
 };
 
@@ -62,7 +64,7 @@ const likeCard = async (req, res, next) => {
     ).orFail();
     res.status(200).json(addlike);
   } catch (error) {
-    next(new InvalidError('Error al dar like a la tarjeta.'));
+    next(InvalidError('Error al dar like a la tarjeta.'));
   }
 };
 
@@ -76,7 +78,7 @@ const dislikeCard = async (req, res, next) => {
     ).orFail();
     res.status(200).json(dislike);
   } catch (error) {
-    next(new InvalidError('Error al quitar like a la tarjeta.'));
+    next(InvalidError('Error al quitar like a la tarjeta.'));
   }
 };
 

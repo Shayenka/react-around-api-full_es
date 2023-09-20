@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
-const generateAuthToken = require('../utils/utils');
-const User = require('../models/user');
+const { generateAuthToken } = require('../utils/utils');
+const { User } = require('../models/user');
 const { NotFoundError, InvalidError, ServerError } = require('../middlewares/errors');
 
 // Controlador para obtener todas los usuarios
@@ -9,21 +9,22 @@ const getUsers = async (req, res, next) => {
     const users = await User.find();
     res.json(users);
   } catch (error) {
-    next(new ServerError('Ha ocurrido un error en el servidor.'));
+    next(ServerError('Ha ocurrido un error en el servidor.'));
   }
 };
 
 const getUserId = async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const user = await User.findById(userId).orFail(() => {
+    const { _id } = req.user;
+    const user = await User.findById(_id).orFail(() => {
       const error = new NotFoundError('Usuario no encontrado');
       throw error;
     });
 
     res.json({ user });
   } catch (error) {
-    next(new ServerError('Ha ocurrido un error en el servidor.'));
+    console.log(error);
+    next(ServerError('Ha ocurrido un error en el servidor.'));
   }
 };
 
@@ -67,17 +68,20 @@ const createUser = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
+  console.log(email, password);
 
   try {
     const user = await User.findUserWithCredentials(email, password);
-
+    console.log(user);
     if (user) {
-      const token = await generateAuthToken();
+      const token = await generateAuthToken(user);
       return res.send({ token });
     }
+    // return res.status(404).send("Not found");
     throw new InvalidCredentialsError('Credenciales de inicio de sesión inválidas');
   } catch (error) {
-    next(error);
+    console.log(error);
+    return res.status(404).send('Not found');
   }
 };
 
@@ -95,12 +99,12 @@ const updateUserProfile = async (req, res, next) => {
       { name, about },
       { new: true },
     ).orFail();
-    res.status(201).json(updateUser);
+    return res.status(201).json(updateUser);
   } catch (error) {
     if (error.name === 'ValidationError') {
-      next(new InvalidError('Datos del perfil inválidos.'));
+      next(InvalidError('Datos del perfil inválidos.'));
     } else {
-      res.status(500).json({ message: 'Ha ocurrido un error en el servidor.' });
+      return res.status(500).json({ message: 'Ha ocurrido un error en el servidor.' });
     }
   }
 };
@@ -117,15 +121,14 @@ const updateUserAvatarProfile = async (req, res) => {
       { avatar },
       { new: true },
     ).orFail();
-    res.status(201).json(updateUserAvatar);
+    return res.status(201).json(updateUserAvatar);
   } catch (error) {
     if (error.name === 'ValidationError') {
-      res
+      return res
         .status(ERROR_CODE_INVALID)
         .json({ message: 'Datos de foto de perfil inválidos.' });
-    } else {
-      next(new ServerError('Ha ocurrido un error en el servidor.'));
     }
+    next(ServerError('Ha ocurrido un error en el servidor.'));
   }
 };
 

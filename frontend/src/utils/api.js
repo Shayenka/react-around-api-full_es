@@ -1,3 +1,5 @@
+const BASE_URL = "http://127.0.0.1:3000";
+
 class Api {
   constructor({ address, groupId, token }) {
     this.token = token; 
@@ -23,16 +25,16 @@ class Api {
 
   getUserInfo() {
     return this._useFetch(
-      "https://around.nomoreparties.co/v1/web_es_05/users/me",
+      `${BASE_URL}/users/me`,
       `GET`
     ).then((result) => {
       return result;
     });
   }
 
-  editUserInfo(name, about) {
+  editUserInfo({name, about}) {
     return this._useFetch(
-      "https://around.nomoreparties.co/v1/web_es_05/users/me",
+      `${BASE_URL}/users/me`,
       `PATCH`,
       { name: name, about: about }
     ).then((result) => {
@@ -42,7 +44,7 @@ class Api {
 
   getCards() {
     return this._useFetch(
-      "https://around.nomoreparties.co/v1/web_es_05/cards",
+      `${BASE_URL}/cards`,
       `GET`
     ).then((result) => {
       return result;
@@ -52,7 +54,7 @@ class Api {
   changeLikeCardStatus(cardId, isLiked) {
     const method = isLiked ? "PUT" : "DELETE";
     return this._useFetch(
-      `https://around.nomoreparties.co/v1/web_es_05/cards/likes/${cardId}`,
+      `${BASE_URL}/cards/likes/${cardId}`,
       method
     ).then((result) => {
       return result;
@@ -61,7 +63,7 @@ class Api {
 
   deleteCard(cardId) {
     return this._useFetch(
-      `https://around.nomoreparties.co/v1/web_es_05/cards/${cardId}`,
+      `${BASE_URL}/cards/${cardId}`,
       `DELETE`
     ).then((result) => {
       return result;
@@ -70,7 +72,7 @@ class Api {
 
   changeAvatarProfile(userAvatar) {
     return this._useFetch(
-      "https://around.nomoreparties.co/v1/web_es_05/users/me/avatar",
+      `${BASE_URL}/users/me/avatar`,
       `PATCH`,
       userAvatar
     ).then((result) => {
@@ -80,7 +82,7 @@ class Api {
 
   addNewCard(name, link) {
     return this._useFetch(
-      "https://around.nomoreparties.co/v1/web_es_05/cards",
+      `${BASE_URL}/cards`,
       `POST`,
       { name: name, link: link }
     ).then((result) => {
@@ -88,17 +90,6 @@ class Api {
     });
   }
 
-  async registerUserApi(email, password) {
-    return this._useFetch(`https://register.nomoreparties.co/signup`, `POST`, {
-      email,
-      password,
-    })
-      .then((result) => {
-        console.log(result);
-        return result;
-      })
-      .catch((err) => console.log(err));
-  }
 }
 
 export default Api;
