@@ -17,7 +17,7 @@ const getUserId = async (req, res, next) => {
   try {
     const { _id } = req.user;
     const user = await User.findById(_id).orFail(() => {
-      const error = new NotFoundError('Usuario no encontrado');
+      const error = NotFoundError('Usuario no encontrado');
       throw error;
     });
 
@@ -44,7 +44,7 @@ const createUser = async (req, res, next) => {
     } = req.body;
     const user = await User.findOne({ email });
     if (user) {
-      throw new InvalidError('Ya Existe un usuario con ese email');
+      throw InvalidError('Ya Existe un usuario con ese email');
     }
 
     const passwordHashed = await hashPassword(password);
@@ -59,9 +59,9 @@ const createUser = async (req, res, next) => {
     res.status(201).json(newUser);
   } catch (error) {
     if (error.name === 'ValidationError') {
-      next(new InvalidError('Se pasaron datos incorrectos.'));
+      next(InvalidError('Se pasaron datos incorrectos.'));
     } else {
-      next(new ServerError('Ha ocurrido un error en el servidor.'));
+      next(ServerError('Ha ocurrido un error en el servidor.'));
     }
   }
 };
@@ -78,7 +78,7 @@ const login = async (req, res, next) => {
       return res.send({ token });
     }
     // return res.status(404).send("Not found");
-    throw new InvalidCredentialsError('Credenciales de inicio de sesión inválidas');
+    throw InvalidCredentialsError('Credenciales de inicio de sesión inválidas');
   } catch (error) {
     console.log(error);
     return res.status(404).send('Not found');
@@ -89,11 +89,8 @@ const login = async (req, res, next) => {
 const updateUserProfile = async (req, res, next) => {
   try {
     const { name, about } = req.body;
-
+    console.log(req.body);
     // Verifica si el usuario autenticado es el propietario del perfil
-    if (req.user._id !== req.params.userId) {
-      return res.status(403).json({ message: 'No tienes permiso para editar este perfil.' });
-    }
     const updateUser = await User.findByIdAndUpdate(
       req.user._id,
       { name, about },
@@ -113,9 +110,7 @@ const updateUserProfile = async (req, res, next) => {
 const updateUserAvatarProfile = async (req, res) => {
   try {
     const { avatar } = req.body;
-    if (req.user._id !== req.params.userId) {
-      return res.status(403).json({ message: 'No tienes permiso para editar este perfil.' });
-    }
+    console.log(req.body);
     const updateUserAvatar = await User.findByIdAndUpdate(
       req.user._id,
       { avatar },

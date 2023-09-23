@@ -58,7 +58,8 @@ function App() {
 
 
   function handleUpdateUser(user) {
-    api.editUserInfo(user.name, user.about).then((response) => {
+    console.log(user);
+    api.editUserInfo(user).then((response) => {
       setCurrentUser(response);
       closeAllPopups();
     });

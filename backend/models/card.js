@@ -12,8 +12,9 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator(value) {
-        return validator.isURL(value);
+      validator: function validateLink(value) {
+        const userAvatarUrlRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-_~:/?%#[\]@!$&'()*+,;=.]+$/;
+        return userAvatarUrlRegex.test(value);
       },
       message: 'El enlace de la tarjeta no cumple con los requisitos.',
     },

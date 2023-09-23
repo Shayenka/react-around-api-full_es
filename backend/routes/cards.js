@@ -18,8 +18,8 @@ router.post('/cards', jwtMiddleware, celebrate({
 
 router.delete('/cards/:cardId', jwtMiddleware, cardsController.deleteCard);
 
-router.put('/cards/:cardId/likes', jwtMiddleware, cardsController.likeCard);
+router.put('/cards/likes/:cardId', jwtMiddleware, cardsController.likeCard);
 
-router.delete('/cards/:cardId/likes', jwtMiddleware, cardsController.dislikeCard);
+router.delete('/cards/likes/:cardId', jwtMiddleware, cardsController.dislikeCard);
 
 module.exports = router;

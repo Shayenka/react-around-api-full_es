@@ -20,7 +20,7 @@ router.patch('/users/me', jwtMiddleware, celebrate({
 
 router.patch('/users/me/avatar', jwtMiddleware, celebrate({
   body: Joi.object().keys({
-    link: Joi.string().required().custom(validateURL),
+    avatar: Joi.string().required().custom(validateURL),
   }),
 }), usersController.updateUserAvatarProfile);
 

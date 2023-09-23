@@ -8,6 +8,7 @@ class Api {
   }
 
   _useFetch(url, method, body) {
+    
     return fetch(url, {
       headers: {
         authorization: `Bearer ${this.token}`, 
@@ -55,7 +56,7 @@ class Api {
     const method = isLiked ? "PUT" : "DELETE";
     return this._useFetch(
       `${BASE_URL}/cards/likes/${cardId}`,
-      method
+      method 
     ).then((result) => {
       return result;
     });

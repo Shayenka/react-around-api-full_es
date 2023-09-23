@@ -17,10 +17,13 @@ const getCards = async (req, res, next) => {
 const createCard = async (req, res, next) => {
   try {
     const { name, link } = req.body;
+    console.log(req.body);
+    console.log(req.user);
     const ownerId = req.user._id;
     const newCard = await Card.create({ name, link, owner: ownerId });
     res.status(201).json(newCard);
   } catch (error) {
+    console.log(error);
     if (error.name === 'ValidationError') {
       next(InvalidError('Datos de la tarjeta inválidos.'));
     } else {
@@ -63,7 +66,9 @@ const likeCard = async (req, res, next) => {
       { new: true },
     ).orFail();
     res.status(200).json(addlike);
+    console.log(addlike);
   } catch (error) {
+    console.log(error);
     next(InvalidError('Error al dar like a la tarjeta.'));
   }
 };
@@ -77,6 +82,7 @@ const dislikeCard = async (req, res, next) => {
       { new: true },
     ).orFail();
     res.status(200).json(dislike);
+    console.log(dislike);
   } catch (error) {
     next(InvalidError('Error al quitar like a la tarjeta.'));
   }
