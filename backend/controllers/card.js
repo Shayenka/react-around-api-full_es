@@ -44,7 +44,7 @@ const deleteCard = async (req, res, next) => {
       throw new NotFoundError('No se encontró la tarjeta con esa ID.');
     }
 
-    if (selectedCard.owner.toString() !== _id) {
+    if (String(selectedCard.owner) !== _id) {
       throw new NotAuthorization('No tienes permiso para borrar esta tarjeta.');
     }
 
