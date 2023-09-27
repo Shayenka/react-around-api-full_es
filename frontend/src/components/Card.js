@@ -6,13 +6,13 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 function Card(props) {
   const currentUser = useContext(CurrentUserContext);
 
-  const isOwn = props.owner._id === currentUser._id;
+  const isOwn = props.owner === currentUser._id;
 
   const cardDeleteButtonClassName = `element__delete ${
     isOwn ? "element__delete-visible" : ""
   }`;
 
-  const isLiked = props.likes.some((item) => item._id === currentUser._id);
+  const isLiked = props.likes.some((item) => item === currentUser._id);
 
   const cardLikeButtonClassName = `icon-like ${
     isLiked ? "icon-like_black" : ""

@@ -36,14 +36,15 @@ const createCard = async (req, res, next) => {
 const deleteCard = async (req, res, next) => {
   try {
     const { cardId } = req.params;
-    const { userId } = req.user;
+    const { _id } = req.user;
     const selectedCard = await Card.findById(cardId);
+    console.log(selectedCard);
 
     if (!selectedCard) {
       throw new NotFoundError('No se encontró la tarjeta con esa ID.');
     }
 
-    if (selectedCard.owner._id !== userId) {
+    if (selectedCard.owner.toString() !== _id) {
       throw new NotAuthorization('No tienes permiso para borrar esta tarjeta.');
     }
 

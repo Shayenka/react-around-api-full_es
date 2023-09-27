@@ -1,17 +1,15 @@
 const BASE_URL = "http://127.0.0.1:3000";
 
 class Api {
-  constructor({ address, groupId, token }) {
-    this.token = token; 
+  constructor({ address }) {
     this.address = address;
-    this.groupId = groupId;
   }
 
-  _useFetch(url, method, body) {
+  _useFetch(token, url, method, body) {
     
     return fetch(url, {
       headers: {
-        authorization: `Bearer ${this.token}`, 
+        authorization: `Bearer ${token}`, 
         "Content-Type": "application/json",
       },
       method,
@@ -24,8 +22,9 @@ class Api {
     });
   }
 
-  getUserInfo() {
+  getUserInfo(token) {
     return this._useFetch(
+      token,
       `${BASE_URL}/users/me`,
       `GET`
     ).then((result) => {
@@ -33,8 +32,9 @@ class Api {
     });
   }
 
-  editUserInfo({name, about}) {
+  editUserInfo(token, name, about) {
     return this._useFetch(
+      token,
       `${BASE_URL}/users/me`,
       `PATCH`,
       { name: name, about: about }
@@ -43,8 +43,9 @@ class Api {
     });
   }
 
-  getCards() {
+  getCards(token) {
     return this._useFetch(
+      token,
       `${BASE_URL}/cards`,
       `GET`
     ).then((result) => {
@@ -52,9 +53,10 @@ class Api {
     });
   }
 
-  changeLikeCardStatus(cardId, isLiked) {
+  changeLikeCardStatus(token, cardId, isLiked) {
     const method = isLiked ? "PUT" : "DELETE";
     return this._useFetch(
+      token,
       `${BASE_URL}/cards/likes/${cardId}`,
       method 
     ).then((result) => {
@@ -62,8 +64,9 @@ class Api {
     });
   }
 
-  deleteCard(cardId) {
+  deleteCard(token, cardId) {
     return this._useFetch(
+      token,
       `${BASE_URL}/cards/${cardId}`,
       `DELETE`
     ).then((result) => {
@@ -71,8 +74,9 @@ class Api {
     });
   }
 
-  changeAvatarProfile(userAvatar) {
+  changeAvatarProfile(token, userAvatar) {
     return this._useFetch(
+      token,
       `${BASE_URL}/users/me/avatar`,
       `PATCH`,
       userAvatar
@@ -81,8 +85,9 @@ class Api {
     });
   }
 
-  addNewCard(name, link) {
+  addNewCard(token, name, link) {
     return this._useFetch(
+      token,
       `${BASE_URL}/cards`,
       `POST`,
       { name: name, link: link }
